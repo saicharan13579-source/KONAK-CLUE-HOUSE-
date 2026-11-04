@@ -788,6 +788,7 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .sx-e .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px}
 .sx-k{cursor:pointer;transition:border-color .2s}.sx-k:hover{border-color:var(--accent)}
 .sx-tabs{margin-bottom:-12px}
+a.brand{text-decoration:none;color:inherit;cursor:pointer;border-radius:4px;transition:opacity .2s}a.brand:hover{opacity:.75}a.brand:hover b{color:var(--accent)}
 /* pager */
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);padding:12px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0;max-width:48%;transition:border-color .2s,transform .2s}
@@ -842,7 +843,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
 <header class="top">
   <div class="wrap">
     <div class="top-row">
-      <div class="brand"><span>Ankura Homes</span><b>KONAK CLUBHOUSE</b></div>
+      <a class="brand" href="#designs" id="brand-home" aria-label="Back to the landing page" title="Back to the landing page"><span>Ankura Homes</span><b>KONAK CLUBHOUSE</b></a>
       <div class="top-meta"><button class="dbtn hdr-snd" id="hdr-snd" aria-pressed="false" title="Sound on/off">♪</button><button class="present-btn" data-present>▶ Present</button><span class="pill" id="today-pill"><i class="dot"></i><span></span></span><span class="pill" id="stage-pill"></span></div>
     </div>
     <nav class="tabs" id="tabs" aria-label="Portal sections">
@@ -1161,7 +1162,7 @@ terms:["All stakeholders, decision-makers, consultants and their roles are ident
 /* ---------- routing ---------- */
 const VIEWS=["designs","moodboard","plans","timeline","budget","exclusions","scope","site"];
 const VNAME={designs:"Designs",moodboard:"Moodboard",plans:"Floor plans",timeline:"Timeline",budget:"Budget & BOQ",exclusions:"Not in BOQ",scope:"Scope & team",site:"Site execution"};
-function route(){let h=(location.hash||"#designs").slice(1);if(h==="renders"||h==="overview"||h==="present")h="designs";if(!VIEWS.includes(h))h="designs";VIEWS.forEach(v=>$("#v-"+v).hidden=v!==h);$$("#tabs a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+h?"page":"false"));const t=$(`#tabs a[href="#${h}"]`);t&&t.scrollIntoView({block:"nearest",inline:"nearest"});const ins=$("#intro");if(ins){ins.hidden=h!=="designs";}window.scrollTo(0,(h==="designs"&&window._routed&&ins)?ins.offsetTop+ins.offsetHeight:0);window._routed=true;if(typeof shTimer==="function")shTimer()}
+function route(){let h=(location.hash||"#designs").slice(1);if(h==="renders"||h==="overview"||h==="present")h="designs";if(!VIEWS.includes(h))h="designs";VIEWS.forEach(v=>$("#v-"+v).hidden=v!==h);$$("#tabs a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+h?"page":"false"));const t=$(`#tabs a[href="#${h}"]`);t&&t.scrollIntoView({block:"nearest",inline:"nearest"});const ins=$("#intro");if(ins){ins.hidden=h!=="designs";}window.scrollTo(0,(h==="designs"&&window._routed&&ins&&!window._toTop)?ins.offsetTop+ins.offsetHeight:0);window._toTop=false;window._routed=true;if(typeof shTimer==="function")shTimer()}
 addEventListener("hashchange",route);
 
 /* ---------- dates ---------- */
@@ -1914,6 +1915,7 @@ function initTimeline(){renderTimeline();$("#gantt").addEventListener("click",e=
 function initTocs(){$$(".view").forEach(v=>{const ts=[...v.querySelectorAll("[data-toc]")];if(ts.length<2)return;const head=v.querySelector(".sec-head");const nav=document.createElement("nav");nav.className="toc";nav.setAttribute("aria-label","On this page");nav.innerHTML='<span class="eyebrow">On this page</span>'+ts.map((el,i)=>{el.id=el.id||v.id+'-s'+i;return`<a href="#" data-to="${el.id}">${el.dataset.toc}</a>`}).join("");nav.onclick=e=>{const a=e.target.closest("[data-to]");if(!a)return;e.preventDefault();const el=document.getElementById(a.dataset.to);if(el.tagName==="DETAILS")el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};(head||v.firstElementChild).insertAdjacentElement(head?"afterend":"afterbegin",nav)})}
 function initPagers(){$$("[data-pager]").forEach(p=>{const v=p.closest(".view").id.slice(2),i=VIEWS.indexOf(v),pv=VIEWS[i-1],nx=VIEWS[i+1];p.innerHTML=(pv?`<a href="#${pv}"><span>← ${pad(i)} Previous</span><b>${VNAME[pv]}</b></a>`:"")+(nx?`<a class="nx" href="#${nx}"><span>${pad(i+2)} Next →</span><b>${VNAME[nx]}</b></a>`:`<a class="nx" href="#designs"><span>Back to start ↺</span><b>Designs</b></a>`)})}
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(SH.t);else shTimer()});
-initTimeline();initPlans();initPlanExtras();initBudget();initRenders();renderMood();initExcl();renderScope();initPagers();sxBind();sxInit();initTocs();initDeck();route();if(location.hash==='#present')openDeck(0);
+initTimeline();initPlans();initPlanExtras();initBudget();initRenders();renderMood();initExcl();renderScope();document.getElementById('brand-home').onclick=e=>{e.preventDefault();window._toTop=true;if(location.hash==='#designs'||location.hash===''){route()}else location.hash='#designs';setTimeout(()=>scrollTo({top:0,behavior:'smooth'}),30)};
+initPagers();sxBind();sxInit();initTocs();initDeck();route();if(location.hash==='#present')openDeck(0);
 </script>
 </body></html>
