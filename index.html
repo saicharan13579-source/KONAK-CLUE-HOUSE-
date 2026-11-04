@@ -786,6 +786,8 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .sx-e{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
 .sx-e .d{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
 .sx-e .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px}
+.sx-k{cursor:pointer;transition:border-color .2s}.sx-k:hover{border-color:var(--accent)}
+.sx-tabs{margin-bottom:-12px}
 /* pager */
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);padding:12px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0;max-width:48%;transition:border-color .2s,transform .2s}
@@ -1031,17 +1033,18 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
 <section class="view wrap" id="v-site" hidden>
   <div class="stack">
     <div class="sec-head"><div><div class="eyebrow">08 · Site execution</div><h2>On-site progress</h2></div><p>Track the works on site: stages and dates, contractors and vendors, material and furniture selections, and the daily site log. <span id="sx-store" class="muted"></span></p></div>
-    <div class="sx-kpis" id="sx-kpis" data-toc="Overview"></div>
-    <div data-toc="Stages &amp; timeline"><div class="blk-h"><span class="n">A</span><h3>Execution stages &amp; timeline</h3><span class="muted" style="font-size:13px">Draft sequence starting after vendor finalisation (24 Nov 2026). Edit dates, status and progress to match the contractor's programme.</span></div>
+    <div class="sx-kpis" id="sx-kpis"></div>
+    <div class="mb-modes sx-tabs" id="sx-tabs" role="tablist"><button role="tab" data-p="stages" aria-selected="true">Stages &amp; timeline</button><button role="tab" data-p="vendors" aria-selected="false">Contractors &amp; vendors</button><button role="tab" data-p="sel" aria-selected="false">Materials &amp; furniture</button><button role="tab" data-p="log" aria-selected="false">Site log</button></div>
+    <div class="sx-pane" data-pane="stages"><div class="blk-h"><h3>Execution stages &amp; timeline</h3><span class="muted" style="font-size:13px">Draft sequence starting after vendor finalisation (24 Nov 2026). Edit dates, status and progress to match the contractor's programme.</span></div>
       <div class="gantt-wrap"><div class="sx-gantt" id="sx-gantt"></div></div>
       <div class="sx-stages" id="sx-stages"></div></div>
-    <div data-toc="Contractors &amp; vendors"><div class="blk-h"><span class="n">B</span><h3>Contractors &amp; vendors</h3><span class="muted" style="font-size:13px">One row per work package. Brands are the shortlist from the quotations.</span></div>
+    <div class="sx-pane" data-pane="vendors" hidden><div class="blk-h"><h3>Contractors &amp; vendors</h3><span class="muted" style="font-size:13px">One row per work package. Brands are the shortlist from the quotations.</span></div>
       <div class="tbl-wrap"><table class="sx-tbl" id="sx-vendors"><thead><tr><th>Package</th><th>Shortlisted brands</th><th>Contractor / vendor</th><th>Contact</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
-    <div data-toc="Materials &amp; furniture"><div class="blk-h"><span class="n">C</span><h3>Material &amp; furniture selection</h3><span class="muted" style="font-size:13px">Every BOQ line with the option chosen in the budget mix. Move each one through sample → approved → ordered → delivered → installed.</span></div>
+    <div class="sx-pane" data-pane="sel" hidden><div class="blk-h"><h3>Material &amp; furniture selection</h3><span class="muted" style="font-size:13px">Every BOQ line with the option chosen in the budget mix. Move each one through sample → approved → ordered → delivered → installed.</span></div>
       <div class="controls" style="margin-bottom:12px"><div class="seg" id="sx-cat" role="group"></div><span class="muted mono" id="sx-selcount" style="font-size:12px"></span></div>
       <div class="sx-pipe" id="sx-pipe"></div>
       <div class="tbl-wrap"><table class="sx-tbl" id="sx-sel"><thead><tr><th></th><th>Line</th><th>Selected specification</th><th>Brand</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
-    <div data-toc="Site log"><div class="blk-h"><span class="n">D</span><h3>Site log</h3><span class="muted" style="font-size:13px">Daily updates from site: what was done, where, and what is blocking.</span></div>
+    <div class="sx-pane" data-pane="log" hidden><div class="blk-h"><h3>Site log</h3><span class="muted" style="font-size:13px">Daily updates from site: what was done, where, and what is blocking.</span></div>
       <form class="sx-form" id="sx-form"><input type="date" id="sx-date" aria-label="Date" required><select id="sx-area" aria-label="Area"></select><select id="sx-stage" aria-label="Stage"></select><select id="sx-kind" aria-label="Type"><option>Progress</option><option>Issue</option><option>Delivery</option><option>Inspection</option></select><input id="sx-note" placeholder="What happened on site today" aria-label="Note" required><button class="present-btn" type="submit">Add entry</button></form>
       <div class="sx-log" id="sx-log"></div></div>
   </div>
@@ -1875,7 +1878,7 @@ function sxRender(){
  const selS=BOQ.map(r=>SX.sel[r.id]||"Pending"),inst=selS.filter(x=>x==="Installed").length,appr=selS.filter(x=>SX_SEL.indexOf(x)>=2).length;
  const ven=SX_PKG.filter(p=>["Appointed","On site","Completed"].includes((SX.vendors[p[0]]||{}).st)).length;
  const cur=S.find(s=>s.st==="In progress")||S.find(s=>s.st==="Not started");
- $("#sx-kpis").innerHTML=`<div class="sx-k"><span class="eyebrow">Overall progress</span><div class="v">${pc}%</div><div class="sx-bar"><i style="width:${pc}%"></i></div><small>Weighted by stage duration</small></div><div class="sx-k"><span class="eyebrow">Current stage</span><div class="v" style="font-size:22px;line-height:1.2">${cur?esc(cur.n):"Handover complete"}</div><small>${cur?fmt(cur.start)+" – "+fmt(cur.end):""}</small></div><div class="sx-k"><span class="eyebrow">Vendors appointed</span><div class="v">${ven}<span class="muted" style="font-size:18px"> / ${SX_PKG.length}</span></div><small>Work packages with an appointed contractor</small></div><div class="sx-k"><span class="eyebrow">Selections approved</span><div class="v">${appr}<span class="muted" style="font-size:18px"> / ${BOQ.length}</span></div><small>${inst} installed on site</small></div>`;
+ $("#sx-kpis").innerHTML=`<div class="sx-k" data-go="stages" role="button" tabindex="0"><span class="eyebrow">Overall progress</span><div class="v">${pc}%</div><div class="sx-bar"><i style="width:${pc}%"></i></div><small>Weighted by stage duration</small></div><div class="sx-k" data-go="stages" role="button" tabindex="0"><span class="eyebrow">Current stage</span><div class="v" style="font-size:22px;line-height:1.2">${cur?esc(cur.n):"Handover complete"}</div><small>${cur?fmt(cur.start)+" – "+fmt(cur.end):""}</small></div><div class="sx-k" data-go="vendors" role="button" tabindex="0"><span class="eyebrow">Vendors appointed</span><div class="v">${ven}<span class="muted" style="font-size:18px"> / ${SX_PKG.length}</span></div><small>Work packages with an appointed contractor</small></div><div class="sx-k" data-go="sel" role="button" tabindex="0"><span class="eyebrow">Selections approved</span><div class="v">${appr}<span class="muted" style="font-size:18px"> / ${BOQ.length}</span></div><small>${inst} installed on site</small></div>`;
  const g0=d("2026-11-15"),g1=d("2027-03-31"),sp=days(g0,g1),X=v=>Math.max(0,Math.min(100,days(g0,d(v))/sp*100));
  const months=["2026-12-01","2027-01-01","2027-02-01","2027-03-01"];
  $("#sx-gantt").innerHTML=`<div class="sx-gr"><span class="eyebrow">Stage</span><div>${months.map(m=>`<span class="sx-gs" style="left:${X(m)}%">${d(m).toLocaleDateString("en-GB",{month:"short",year:"2-digit"})}</span>`).join("")}<span class="sx-today" style="left:${X(TODAY.toISOString().slice(0,10))}%"></span></div></div>`+S.map((s,i)=>`<div class="sx-gr"><span><span class="mono muted">${pad(i+1)}</span> ${esc(s.n)}</span><div><div class="sx-gb" style="left:${X(s.start)}%;width:${Math.max(.8,X(s.end)-X(s.start))}%" title="${fmt(s.start)} – ${fmt(s.end)} · ${s.st}"><i style="width:${s.st==="Done"?100:s.pct}%"></i></div></div></div>`).join("");
@@ -1889,6 +1892,9 @@ function sxRender(){
  $("#sx-log").innerHTML=L.length?L.map(e=>`<div class="sx-e"><span class="d">${fmt(e.date)}<br>${esc(e.kind||"")}</span><div><b>${esc(e.note)}</b><div class="muted" style="font-size:12.5px">${e.area&&SPACES[e.area]?esc(SPACES[e.area].n)+" · ":""}${esc((SX_STAGES.find(s=>s[0]===e.stage)||[0,""])[1])}</div></div><button class="x" data-del="${esc(e.id)}" aria-label="Delete entry">×</button></div>`).join(""):`<div class="panel" style="text-align:center;padding:28px"><h3 style="margin-bottom:6px">No site entries yet</h3><p class="muted">Add the first update above, for example "Ceiling framing started in GF lounge".</p></div>`;
 }
 function sxBind(){
+ const sxShow=k=>{$$("#sx-tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===k));$$(".sx-pane").forEach(p=>p.hidden=p.dataset.pane!==k);store.set("konak-sx-tab",k)};
+ $("#sx-tabs").onclick=e=>{const b=e.target.closest("[data-p]");if(b)sxShow(b.dataset.p)};sxShow(store.get("konak-sx-tab","stages"));
+ $("#sx-kpis").onclick=e=>{const k=e.target.closest("[data-go]");if(k)sxShow(k.dataset.go)};
  $("#sx-stages").addEventListener("change",e=>{const c=e.target.closest(".sx-st");if(!c)return;const k=c.dataset.s,f=e.target.dataset.f;SX.stages[k]={...(SX.stages[k]||{}),[f]:f==="pct"?+e.target.value:e.target.value};if(f==="st"&&e.target.value==="Done")SX.stages[k].pct=100;sxSave("stages");e.target.blur();sxRender()});
  $("#sx-stages").addEventListener("input",e=>{if(e.target.dataset.f==="pct")e.target.nextElementSibling.textContent=e.target.value+"%"});
  $("#sx-vendors").addEventListener("change",e=>{const r=e.target.closest("tr");if(!r)return;const k=r.dataset.k;SX.vendors[k]={...(SX.vendors[k]||{}),[e.target.dataset.f]:e.target.value};sxSave("vendors");e.target.blur();sxRender()});
