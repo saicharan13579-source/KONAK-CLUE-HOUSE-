@@ -611,7 +611,7 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
 .in-refl{position:absolute;inset:0;background:linear-gradient(112deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.05) 22%,transparent 34%,transparent 58%,rgba(190,215,255,.12) 70%,transparent 84%);background-size:220% 100%;mix-blend-mode:screen;pointer-events:none}
 .int-tag{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(163,25,45,.85);padding:4px 10px;border-radius:999px;opacity:0;transition:opacity .4s}
 .in-int.live .int-tag{opacity:1;animation:cue 1.6s ease-in-out infinite}
-.in-end{pointer-events:none!important}.in-end .in-btns,.in-end .in-moods{pointer-events:auto}.in-title{pointer-events:none}
+.in-end{pointer-events:none!important}.in-end .in-btns{pointer-events:auto}.in-title{pointer-events:none}
 /* readability pass */
 .view{padding-block:36px 72px}
 .sec-head p{font-size:15px;line-height:1.6}
@@ -716,7 +716,8 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .tb-hint.fade{opacity:0}
 @media (max-width:700px){.tb-zones{max-width:calc(100% - 28px);top:54px}.tb-tools{left:14px;right:auto}.tb-mini{width:130px;height:78px}.tb-hint{white-space:normal;width:80%;text-align:center;bottom:100px}}
 @media (max-width:600px){#today-pill{display:none}.present-btn{padding:6px 12px;font-size:12px}.brand b{font-size:17px}}
-.in-moods{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:4px}
+.in-moods{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:calc(66px + env(safe-area-inset-top,0px));display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:calc(100vw - 40px);opacity:0;pointer-events:none;transition:opacity .4s;z-index:6}
+.in-moods.on{pointer-events:auto}
 .in-moods button{border:1px solid rgba(255,255,255,.35);background:rgba(10,14,24,.35);color:#fff;border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;backdrop-filter:blur(6px)}
 .in-moods button[aria-pressed="true"]{background:#fff;color:#2A201A}
 #in-img,#in-fg{object-fit:cover!important;object-position:50% 100%!important}
@@ -746,6 +747,45 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .lf.glow{border-radius:50%;background:radial-gradient(closest-side,rgba(255,244,214,.95),rgba(255,214,150,.45) 45%,transparent 75%);mix-blend-mode:screen;animation:glow 3.2s ease-in-out infinite;animation-delay:var(--dl,0s)}
 @keyframes glow{0%,100%{opacity:.75}50%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.lf{animation:none!important}}
+@media (max-width:600px){.in-moods{top:calc(104px + env(safe-area-inset-top,0px))}}
+/* site execution */
+.sx-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:800px){.sx-kpis{grid-template-columns:1fr 1fr}}
+.sx-k{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.sx-k .v{font-family:var(--f-display);font-size:34px;line-height:1}
+.sx-k small{color:var(--muted);font-size:12.5px}
+.sx-bar{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden;margin-top:6px}.sx-bar i{display:block;height:100%;background:var(--accent)}
+.sx-gantt{min-width:820px;padding:10px 0}
+.sx-gr{display:grid;grid-template-columns:240px 1fr;align-items:center;min-height:34px;border-bottom:1px solid var(--line);font-size:13px}
+.sx-gr:last-child{border-bottom:0}
+.sx-gr>span{padding:4px 12px}
+.sx-gr>div{position:relative;height:34px}
+.sx-gb{position:absolute;top:9px;height:16px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);overflow:hidden}
+.sx-gb i{position:absolute;inset:0 auto 0 0;background:var(--brass)}
+.sx-gs{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);font-size:10.5px;color:var(--muted);padding:2px 4px}
+.sx-today{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
+.sx-stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.sx-st{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.sx-st h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:18px;display:flex;gap:8px;align-items:baseline}
+.sx-st h4 .mono{font-size:11px;color:var(--accent)}
+.sx-st p{font-size:12.5px;color:var(--muted);margin:0}
+.sx-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12.5px}
+.sx-row input[type=date]{font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:5px;padding:4px 6px;background:var(--bg);color:var(--ink)}
+.sx-row input[type=range]{flex:1;accent-color:var(--accent)}
+.sx-tbl input,.sx-tbl select,.sx-st select,.sx-form input,.sx-form select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:5px;padding:5px 8px;background:var(--bg);color:var(--ink);min-width:0}
+.sx-tbl input{width:100%}
+.sx-tbl td{vertical-align:middle}
+.sx-tbl .thumb{width:40px;height:40px;object-fit:cover;border-radius:3px;display:block}
+.st-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.sx-pipe{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.sx-pipe span{flex:1 1 120px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px;display:flex;justify-content:space-between}
+.sx-pipe b{font-family:var(--f-mono)}
+.sx-form{display:grid;grid-template-columns:150px 1fr 1fr 130px 2fr auto;gap:8px;margin-bottom:12px}
+@media (max-width:900px){.sx-form{grid-template-columns:1fr 1fr}}
+.sx-log{display:flex;flex-direction:column;gap:8px}
+.sx-e{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.sx-e .d{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.sx-e .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px}
 /* pager */
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);padding:12px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0;max-width:48%;transition:border-color .2s,transform .2s}
@@ -786,11 +826,11 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
       <div class="eyebrow">Arrival · Clubhouse elevation</div>
       <h2>Konak Club</h2>
       <p>Three floors of lounges, courtyard, pool, sport, banquet and retreat, designed as one continuous landscape.</p><p class="mono" style="font-size:12px;opacity:.75">Chimaldari Konapur, Hyderabad, Telangana</p>
-      <div class="in-moods" role="group" aria-label="Time of day"><button data-m="live" aria-pressed="true">● Live</button><button data-m="morning" aria-pressed="false">Early morning</button><button data-m="day" aria-pressed="false">Day</button><button data-m="sunset" aria-pressed="false">Sunset</button><button data-m="night" aria-pressed="false">Night</button></div>
       <div class="in-btns"><button class="in-go" id="in-enter">Enter the portal ↓</button><button class="in-ghost" data-present>▶ Present the project</button><a class="in-ghost" href="https://maps.app.goo.gl/iSK5qghKauq3zsXy5" target="_blank" rel="noopener" style="text-decoration:none">◎ View location</a></div>
     </div>
     <div class="in-cap" id="in-cap" aria-live="off"><span class="mono" id="cap-a"></span><b id="cap-t"></b><small id="cap-s"></small></div>
     <div class="in-live mono" id="in-live"></div>
+    <div class="in-moods" id="in-moods" role="group" aria-label="Time of day"><button data-m="live" aria-pressed="true">● Live</button><button data-m="morning" aria-pressed="false">Early morning</button><button data-m="day" aria-pressed="false">Day</button><button data-m="sunset" aria-pressed="false">Sunset</button><button data-m="night" aria-pressed="false">Night</button></div>
     <div class="in-tools"><span class="snd-wrap"><button class="in-skip" id="in-snd" aria-pressed="false">♪ Sound off</button><span class="snd-cue" id="snd-cue">Tap for sound</span><div class="snd-panel" id="snd-panel" hidden><div class="mono" id="snd-now" style="font-size:11px;opacity:.85"></div><div class="snd-modes" id="snd-modes" role="group" aria-label="Soundscape"><button data-m="auto" aria-pressed="true">Auto · live</button><button data-m="dawn" aria-pressed="false">Dawn</button><button data-m="day" aria-pressed="false">Day</button><button data-m="dusk" aria-pressed="false">Dusk</button><button data-m="night" aria-pressed="false">Night</button></div><label class="snd-vol"><span>Volume</span><input type="range" id="snd-vol" min="0" max="1" step=".05" value=".7"></label></div></span><button class="in-skip" id="in-skip">Skip intro ↓</button></div>
     <div id="in-load" aria-hidden="true"><div class="ld-p ld-l"></div><div class="ld-p ld-r"></div><div class="ld-c"><div class="ld-t">KONAK</div><div class="ld-s">Clubhouse · Ankura Homes</div><div class="ld-bar"><i id="ld-bar"></i></div><div class="ld-n mono" id="ld-n">0%</div></div></div>
     <div class="in-prog"><i id="in-bar"></i></div>
@@ -811,6 +851,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
       <a href="#budget"><span class="ix">05</span>Budget &amp; BOQ</a>
       <a href="#exclusions"><span class="ix">06</span>Not in BOQ</a>
       <a href="#scope"><span class="ix">07</span>Scope &amp; team</a>
+      <a href="#site"><span class="ix">08</span>Site execution</a>
     </nav>
   </div>
 </header>
@@ -986,6 +1027,26 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
   </div>
   <nav class="pager" data-pager></nav>
 </section>
+<!-- SITE EXECUTION -->
+<section class="view wrap" id="v-site" hidden>
+  <div class="stack">
+    <div class="sec-head"><div><div class="eyebrow">08 · Site execution</div><h2>On-site progress</h2></div><p>Track the works on site: stages and dates, contractors and vendors, material and furniture selections, and the daily site log. <span id="sx-store" class="muted"></span></p></div>
+    <div class="sx-kpis" id="sx-kpis" data-toc="Overview"></div>
+    <div data-toc="Stages &amp; timeline"><div class="blk-h"><span class="n">A</span><h3>Execution stages &amp; timeline</h3><span class="muted" style="font-size:13px">Draft sequence starting after vendor finalisation (24 Nov 2026). Edit dates, status and progress to match the contractor's programme.</span></div>
+      <div class="gantt-wrap"><div class="sx-gantt" id="sx-gantt"></div></div>
+      <div class="sx-stages" id="sx-stages"></div></div>
+    <div data-toc="Contractors &amp; vendors"><div class="blk-h"><span class="n">B</span><h3>Contractors &amp; vendors</h3><span class="muted" style="font-size:13px">One row per work package. Brands are the shortlist from the quotations.</span></div>
+      <div class="tbl-wrap"><table class="sx-tbl" id="sx-vendors"><thead><tr><th>Package</th><th>Shortlisted brands</th><th>Contractor / vendor</th><th>Contact</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+    <div data-toc="Materials &amp; furniture"><div class="blk-h"><span class="n">C</span><h3>Material &amp; furniture selection</h3><span class="muted" style="font-size:13px">Every BOQ line with the option chosen in the budget mix. Move each one through sample → approved → ordered → delivered → installed.</span></div>
+      <div class="controls" style="margin-bottom:12px"><div class="seg" id="sx-cat" role="group"></div><span class="muted mono" id="sx-selcount" style="font-size:12px"></span></div>
+      <div class="sx-pipe" id="sx-pipe"></div>
+      <div class="tbl-wrap"><table class="sx-tbl" id="sx-sel"><thead><tr><th></th><th>Line</th><th>Selected specification</th><th>Brand</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+    <div data-toc="Site log"><div class="blk-h"><span class="n">D</span><h3>Site log</h3><span class="muted" style="font-size:13px">Daily updates from site: what was done, where, and what is blocking.</span></div>
+      <form class="sx-form" id="sx-form"><input type="date" id="sx-date" aria-label="Date" required><select id="sx-area" aria-label="Area"></select><select id="sx-stage" aria-label="Stage"></select><select id="sx-kind" aria-label="Type"><option>Progress</option><option>Issue</option><option>Delivery</option><option>Inspection</option></select><input id="sx-note" placeholder="What happened on site today" aria-label="Note" required><button class="present-btn" type="submit">Add entry</button></form>
+      <div class="sx-log" id="sx-log"></div></div>
+  </div>
+  <nav class="pager" data-pager></nav>
+</section>
 </main>
 <footer><div class="wrap">Compiled from Atelier Nine's execution framework, plans (AKI01–03), renders, moodboard and preliminary quotations (2 Sep and 3 Oct 2026). Preliminary figures for discussion; not a contract value.</div></footer>
 
@@ -1095,8 +1156,8 @@ change:["Every change request is reviewed for its impact on design, documentatio
 terms:["All stakeholders, decision-makers, consultants and their roles are identified at the start; changes are informed to Atelier Nine in advance.","Ankura Homes nominates a primary and a secondary point of contact; the secondary can review and approve when the primary is unavailable.","Client feedback is consolidated into one response; instructions, approvals and major decisions are documented by email, minutes or agreed channels.","Continuous access to stakeholders, consultants, technical information, drawings and communication channels is maintained.","Feedback, inputs and approvals arrive within the agreed review timelines; delays may extend the schedule and are a shared responsibility.","Each phase is reviewed, finalised and approved before the next; revisions to approved stages go through change management.","Atelier Nine coordinates consultants for design integration; each consultant stays responsible for technical accuracy and compliance in their discipline.","The client facilitates site access, meetings, visits and reviews of shop drawings, mock-ups, samples and prototypes.","The latest approved drawings supersede earlier revisions; discrepancies are raised with Atelier Nine before implementation.","Both parties work collaboratively, transparently and proactively to uphold the design intent, quality and milestones."]};
 
 /* ---------- routing ---------- */
-const VIEWS=["designs","moodboard","plans","timeline","budget","exclusions","scope"];
-const VNAME={designs:"Designs",moodboard:"Moodboard",plans:"Floor plans",timeline:"Timeline",budget:"Budget & BOQ",exclusions:"Not in BOQ",scope:"Scope & team"};
+const VIEWS=["designs","moodboard","plans","timeline","budget","exclusions","scope","site"];
+const VNAME={designs:"Designs",moodboard:"Moodboard",plans:"Floor plans",timeline:"Timeline",budget:"Budget & BOQ",exclusions:"Not in BOQ",scope:"Scope & team",site:"Site execution"};
 function route(){let h=(location.hash||"#designs").slice(1);if(h==="renders"||h==="overview"||h==="present")h="designs";if(!VIEWS.includes(h))h="designs";VIEWS.forEach(v=>$("#v-"+v).hidden=v!==h);$$("#tabs a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+h?"page":"false"));const t=$(`#tabs a[href="#${h}"]`);t&&t.scrollIntoView({block:"nearest",inline:"nearest"});const ins=$("#intro");if(ins){ins.hidden=h!=="designs";}window.scrollTo(0,(h==="designs"&&window._routed&&ins)?ins.offsetTop+ins.offsetHeight:0);window._routed=true;if(typeof shTimer==="function")shTimer()}
 addEventListener("hashchange",route);
 
@@ -1763,7 +1824,7 @@ function initDeck(){
   sky.style.opacity=1-seg(p,.14,.42);
   const po=seg(p,.4,.47)*(1-seg(p,.58,.64));pin.style.opacity=po;pin.style.left=ox+"px";pin.style.top=oy+"px";
   ttl.style.opacity=1-seg(p,.02,.16);ttl.style.transform=`translate(${mx*10}px,${my*8-seg(p,0,.2)*60}px) scale(${1+seg(p,0,.2)*.06})`;cv.style.transform=`translate(${mx*-28}px,${my*-18}px) scale(1.06)`;const fl=Math.sin(Math.PI*seg(p,.22,.42));flare.style.opacity=fl*.9*({night:0,day:.35,morning:1,sunset:.9}[ELM||'sunset']);flare.style.transform=`translateX(${lerp(-25,25,seg(p,.22,.42))}%) scaleY(${.6+fl*.6})`;
-  const xo=seg(p,.86,.97);end.style.opacity=xo;end.style.transform=`translateY(${(1-xo)*24}px)`;end.classList.toggle("on",xo>.5);const sc=document.getElementById("snd-cue");if(sc)sc.style.opacity=1-seg(p,.7,.8);
+  const xo=seg(p,.86,.97);end.style.opacity=xo;end.style.transform=`translateY(${(1-xo)*24}px)`;end.classList.toggle("on",xo>.5);{const mo=document.getElementById("in-moods");const v=seg(p,.93,.985);mo.style.opacity=v;mo.classList.toggle("on",v>.5)}const sc=document.getElementById("snd-cue");if(sc){sc.style.opacity=1-seg(p,.7,.8);sc.style.visibility=p>.8?"hidden":""}
   alt.textContent=Math.round(1200*(1-ease(p))).toLocaleString("en-IN");bar.style.height=(p*100)+"%";
   wind(p);if(GLOK)clouds(p,t);else clouds2D(p,t);drawFx(p,t,ox,oy)}
  function loop(t){cur+=(tgt-cur)*.12;if(Math.abs(tgt-cur)<.0005)cur=tgt;draw(t);raf=vis&&!sec.hidden&&!document.hidden?requestAnimationFrame(loop):null}
@@ -1783,6 +1844,61 @@ function initDeck(){
  kick();
 })();
 
+
+/* ---------- site execution ---------- */
+const SX_STAGES=[["mob","Site mobilisation & measurements","Site handover, setting out, measurement checks against working drawings.","2026-11-25","2026-12-02"],["mep","Civil corrections & MEP first fix","Conduits, AC copper and drain routes, plumbing points per interior layouts.","2026-12-01","2026-12-22"],["ceil","False ceiling framing & boarding","Gypsum, POP curves, louvres and acoustic ceilings.","2026-12-15","2027-01-12"],["floor","Flooring & stair cladding","Marble inlays, tiles, decking, sports floors.","2026-12-28","2027-02-01"],["wall","Wall cladding & joinery","Stone, flexi-ply, panelling, fabric and acoustic walls.","2027-01-11","2027-02-15"],["light","Electrical second fix & lighting","Fixtures, profiles, chandeliers, controls.","2027-02-01","2027-02-20"],["furn","Furniture & loose items","Custom furniture delivery and installation.","2027-02-15","2027-03-05"],["land","Landscaping & planters","Indoor lawn, boulders, planters, courtyard installation.","2027-02-20","2027-03-08"],["snag","Snagging, cleaning & handover","Design compliance review, snag list, final cleaning.","2027-03-05","2027-03-15"]];
+const SX_ST=["Not started","In progress","On hold","Done"],SX_STC={"Not started":"st-past","In progress":"st-up","On hold":"st-soon","Done":"st-today"};
+const SX_PKG=[["ceil","False ceiling","Gypsum / POP contractor"],["stone","Stone flooring & cladding","Stone Life, Helios, One Stone"],["tile","Tiles","Kajaria, Jaguar, Simpolo, Somany"],["deck","Decking & wooden floors","VOX, Opulo India"],["sport","Sports flooring","As per consultant"],["join","Wall cladding & joinery","Custom · Merino, Royal Touch laminates"],["light","Lighting","Hybec"],["furn","Furniture","Custom"],["land","Landscaping & planters","GRC / FRP planters, indoor lawn"],["door","Doors","MDF / veneer with brass, laminate with PVD"],["mep","MEP / HVAC","As per consultants"]];
+const SX_VS=["Shortlisted","Quoted","Appointed","On site","Completed"];
+const SX_SEL=["Pending","Sample shared","Approved","Ordered","Delivered","Installed"];
+const SX={stages:{},vendors:{},sel:{},log:[],db:null,mode:"local"};
+let SXC="all";
+const sxLocal=()=>store.get("konak-site",{stages:{},vendors:{},sel:{},log:[]});
+async function sxInit(){
+ $("#sx-area").innerHTML='<option value="">Whole clubhouse</option>'+Object.entries(SPACES).map(([k,s])=>`<option value="${k}">${esc(s.n)} · ${s.f}</option>`).join("");
+ $("#sx-stage").innerHTML=SX_STAGES.map(s=>`<option value="${s[0]}">${s[1]}</option>`).join("");
+ $("#sx-date").value=new Date(Date.now()+5.5*36e5).toISOString().slice(0,10);
+ $("#sx-cat").innerHTML=["all",...CATS].map(c=>`<button data-c="${c}" aria-pressed="${c==="all"}">${c==="all"?"All":c}</button>`).join("");
+ $("#sx-cat").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;SXC=b.dataset.c;$$("#sx-cat button").forEach(x=>x.setAttribute("aria-pressed",x===b));sxSel()};
+ const l=sxLocal();Object.assign(SX,{stages:l.stages||{},vendors:l.vendors||{},sel:l.sel||{},log:l.log||[]});sxRender();
+ $("#sx-store").textContent="Changes are saved in this browser.";
+ let db=null;try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){db=null}
+ if(!db)return;SX.db=db;SX.mode="shared";$("#sx-store").textContent="Changes are shared with everyone who can edit this portal.";
+ for(const k of ["stages","vendors","sel"])db.doc("site/"+k).onSnapshot(s=>{SX[k]=(s.exists&&s.data())||{};sxRender()},()=>{});
+ db.collection("sitelog").onSnapshot(q=>{SX.log=q.docs.map(d=>({id:d.id,...d.data()}));sxRender()},()=>{});
+}
+const sxQ={};async function sxSave(k){if(SX.mode==="local"){store.set("konak-site",{stages:SX.stages,vendors:SX.vendors,sel:SX.sel,log:SX.log});return}
+ clearTimeout(sxQ[k]);sxQ[k]=setTimeout(async()=>{try{await SX.db.doc("site/"+k).set(JSON.parse(JSON.stringify(SX[k])))}catch(e){toast(e&&e.code==="invalid_argument"?"You can view this tracker but not edit it":"Could not save, try again")}},600)}
+function sxStage(id){const d=SX_STAGES.find(s=>s[0]===id);const v=SX.stages[id]||{};return{id,n:d[1],desc:d[2],start:v.start||d[3],end:v.end||d[4],st:v.st||"Not started",pct:v.pct??0,note:v.note||""}}
+function sxRender(){
+ const S=SX_STAGES.map(s=>sxStage(s[0]));const dur=s=>Math.max(1,days(d(s.start),d(s.end)));const tot=S.reduce((a,s)=>a+dur(s),0),done=S.reduce((a,s)=>a+dur(s)*(s.st==="Done"?100:s.pct)/100,0),pc=Math.round(done/tot*100);
+ const selS=BOQ.map(r=>SX.sel[r.id]||"Pending"),inst=selS.filter(x=>x==="Installed").length,appr=selS.filter(x=>SX_SEL.indexOf(x)>=2).length;
+ const ven=SX_PKG.filter(p=>["Appointed","On site","Completed"].includes((SX.vendors[p[0]]||{}).st)).length;
+ const cur=S.find(s=>s.st==="In progress")||S.find(s=>s.st==="Not started");
+ $("#sx-kpis").innerHTML=`<div class="sx-k"><span class="eyebrow">Overall progress</span><div class="v">${pc}%</div><div class="sx-bar"><i style="width:${pc}%"></i></div><small>Weighted by stage duration</small></div><div class="sx-k"><span class="eyebrow">Current stage</span><div class="v" style="font-size:22px;line-height:1.2">${cur?esc(cur.n):"Handover complete"}</div><small>${cur?fmt(cur.start)+" – "+fmt(cur.end):""}</small></div><div class="sx-k"><span class="eyebrow">Vendors appointed</span><div class="v">${ven}<span class="muted" style="font-size:18px"> / ${SX_PKG.length}</span></div><small>Work packages with an appointed contractor</small></div><div class="sx-k"><span class="eyebrow">Selections approved</span><div class="v">${appr}<span class="muted" style="font-size:18px"> / ${BOQ.length}</span></div><small>${inst} installed on site</small></div>`;
+ const g0=d("2026-11-15"),g1=d("2027-03-31"),sp=days(g0,g1),X=v=>Math.max(0,Math.min(100,days(g0,d(v))/sp*100));
+ const months=["2026-12-01","2027-01-01","2027-02-01","2027-03-01"];
+ $("#sx-gantt").innerHTML=`<div class="sx-gr"><span class="eyebrow">Stage</span><div>${months.map(m=>`<span class="sx-gs" style="left:${X(m)}%">${d(m).toLocaleDateString("en-GB",{month:"short",year:"2-digit"})}</span>`).join("")}<span class="sx-today" style="left:${X(TODAY.toISOString().slice(0,10))}%"></span></div></div>`+S.map((s,i)=>`<div class="sx-gr"><span><span class="mono muted">${pad(i+1)}</span> ${esc(s.n)}</span><div><div class="sx-gb" style="left:${X(s.start)}%;width:${Math.max(.8,X(s.end)-X(s.start))}%" title="${fmt(s.start)} – ${fmt(s.end)} · ${s.st}"><i style="width:${s.st==="Done"?100:s.pct}%"></i></div></div></div>`).join("");
+ if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest("#sx-stages"))$("#sx-stages").innerHTML=S.map((s,i)=>`<div class="sx-st" data-s="${s.id}"><h4><span class="mono">${pad(i+1)}</span>${esc(s.n)}</h4><p>${esc(s.desc)}</p><div class="sx-row"><input type="date" data-f="start" value="${s.start}" aria-label="Start"><span>→</span><input type="date" data-f="end" value="${s.end}" aria-label="End"><select data-f="st" aria-label="Status">${SX_ST.map(x=>`<option ${x===s.st?"selected":""}>${x}</option>`).join("")}</select></div><div class="sx-row"><input type="range" min="0" max="100" step="5" data-f="pct" value="${s.st==="Done"?100:s.pct}" aria-label="Progress"><b class="mono">${s.st==="Done"?100:s.pct}%</b></div></div>`).join("");
+ if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest("#sx-vendors"))$("#sx-vendors tbody").innerHTML=SX_PKG.map(([k,n,b])=>{const v=SX.vendors[k]||{};return`<tr data-k="${k}"><td style="font-weight:500">${n}</td><td class="muted" style="font-size:12.5px">${esc(b)}</td><td><input data-f="name" value="${esc(v.name||"")}" placeholder="Not appointed yet"></td><td><input data-f="contact" value="${esc(v.contact||"")}" placeholder="Phone or email"></td><td><select data-f="st">${SX_VS.map(x=>`<option ${x===(v.st||"Shortlisted")?"selected":""}>${x}</option>`).join("")}</select></td></tr>`}).join("");
+ const rows=BOQ.filter(r=>SXC==="all"||r.cat===SXC);
+ $("#sx-pipe").innerHTML=SX_SEL.map(s=>`<span>${s}<b>${rows.filter(r=>(SX.sel[r.id]||"Pending")===s).length}</b></span>`).join("");
+ $("#sx-selcount").textContent=rows.length+" lines";
+ if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest("#sx-sel"))$("#sx-sel tbody").innerHTML=rows.map(r=>{const o=sel(r),st=SX.sel[r.id]||"Pending";return`<tr data-id="${r.id}"><td>${r.img?`<img class="thumb" src="${r.img}" alt="" loading="lazy">`:""}</td><td><span class="tag cat">${r.cat}</span> <b>${esc(r.loc)}</b><div class="muted mono" style="font-size:11.5px">${r.fl} · Opt ${o}</div></td><td style="font-size:13px">${esc(o===2?r.d2:r.d1)}</td><td class="muted" style="font-size:12px">${esc(r.b||"")}</td><td><select data-f="sel">${SX_SEL.map(x=>`<option ${x===st?"selected":""}>${x}</option>`).join("")}</select></td></tr>`}).join("");
+ const L=[...SX.log].sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.ts||0)-(a.ts||0));
+ $("#sx-log").innerHTML=L.length?L.map(e=>`<div class="sx-e"><span class="d">${fmt(e.date)}<br>${esc(e.kind||"")}</span><div><b>${esc(e.note)}</b><div class="muted" style="font-size:12.5px">${e.area&&SPACES[e.area]?esc(SPACES[e.area].n)+" · ":""}${esc((SX_STAGES.find(s=>s[0]===e.stage)||[0,""])[1])}</div></div><button class="x" data-del="${esc(e.id)}" aria-label="Delete entry">×</button></div>`).join(""):`<div class="panel" style="text-align:center;padding:28px"><h3 style="margin-bottom:6px">No site entries yet</h3><p class="muted">Add the first update above, for example "Ceiling framing started in GF lounge".</p></div>`;
+}
+function sxBind(){
+ $("#sx-stages").addEventListener("change",e=>{const c=e.target.closest(".sx-st");if(!c)return;const k=c.dataset.s,f=e.target.dataset.f;SX.stages[k]={...(SX.stages[k]||{}),[f]:f==="pct"?+e.target.value:e.target.value};if(f==="st"&&e.target.value==="Done")SX.stages[k].pct=100;sxSave("stages");e.target.blur();sxRender()});
+ $("#sx-stages").addEventListener("input",e=>{if(e.target.dataset.f==="pct")e.target.nextElementSibling.textContent=e.target.value+"%"});
+ $("#sx-vendors").addEventListener("change",e=>{const r=e.target.closest("tr");if(!r)return;const k=r.dataset.k;SX.vendors[k]={...(SX.vendors[k]||{}),[e.target.dataset.f]:e.target.value};sxSave("vendors");e.target.blur();sxRender()});
+ $("#sx-sel").addEventListener("change",e=>{const r=e.target.closest("tr");if(!r)return;SX.sel[r.dataset.id]=e.target.value;sxSave("sel");e.target.blur();sxRender()});
+ $("#sx-form").addEventListener("submit",async e=>{e.preventDefault();const en={date:$("#sx-date").value,area:$("#sx-area").value,stage:$("#sx-stage").value,kind:$("#sx-kind").value,note:$("#sx-note").value.trim(),ts:Date.now()};if(!en.note)return;
+  if(SX.mode==="shared"){try{await SX.db.collection("sitelog").add(en);$("#sx-note").value="";toast("Entry added")}catch(err){toast(err&&err.code==="invalid_argument"?"You can view this log but not add to it":"Could not save, try again")}}
+  else{SX.log.push({id:"l"+en.ts,...en});sxSave("log");$("#sx-note").value="";sxRender();toast("Entry added")}});
+ $("#sx-log").addEventListener("click",async e=>{const b=e.target.closest("[data-del]");if(!b)return;const id=b.dataset.del;if(SX.mode==="shared"){try{await SX.db.doc("sitelog/"+id).delete()}catch(err){toast("Could not delete")}}else{SX.log=SX.log.filter(x=>x.id!==id);sxSave("log");sxRender()}});
+}
+
 /* ---------- boot ---------- */
 document.addEventListener("click",e=>{const g=e.target.closest("[data-goto-sp]");if(g){RSEL={f:SPACES[g.dataset.gotoSp].f,sp:g.dataset.gotoSp};renderRenders()}});
 function stageDetail(id){const st=STAGES.find(s=>s[0]===id);const ra=RACI[+id-1];const ms=MILES.filter(m=>m[1].toLowerCase()===st[1].toLowerCase());
@@ -1792,6 +1908,6 @@ function initTimeline(){renderTimeline();$("#gantt").addEventListener("click",e=
 function initTocs(){$$(".view").forEach(v=>{const ts=[...v.querySelectorAll("[data-toc]")];if(ts.length<2)return;const head=v.querySelector(".sec-head");const nav=document.createElement("nav");nav.className="toc";nav.setAttribute("aria-label","On this page");nav.innerHTML='<span class="eyebrow">On this page</span>'+ts.map((el,i)=>{el.id=el.id||v.id+'-s'+i;return`<a href="#" data-to="${el.id}">${el.dataset.toc}</a>`}).join("");nav.onclick=e=>{const a=e.target.closest("[data-to]");if(!a)return;e.preventDefault();const el=document.getElementById(a.dataset.to);if(el.tagName==="DETAILS")el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};(head||v.firstElementChild).insertAdjacentElement(head?"afterend":"afterbegin",nav)})}
 function initPagers(){$$("[data-pager]").forEach(p=>{const v=p.closest(".view").id.slice(2),i=VIEWS.indexOf(v),pv=VIEWS[i-1],nx=VIEWS[i+1];p.innerHTML=(pv?`<a href="#${pv}"><span>← ${pad(i)} Previous</span><b>${VNAME[pv]}</b></a>`:"")+(nx?`<a class="nx" href="#${nx}"><span>${pad(i+2)} Next →</span><b>${VNAME[nx]}</b></a>`:`<a class="nx" href="#designs"><span>Back to start ↺</span><b>Designs</b></a>`)})}
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(SH.t);else shTimer()});
-initTimeline();initPlans();initPlanExtras();initBudget();initRenders();renderMood();initExcl();renderScope();initPagers();initTocs();initDeck();route();if(location.hash==='#present')openDeck(0);
+initTimeline();initPlans();initPlanExtras();initBudget();initRenders();renderMood();initExcl();renderScope();initPagers();sxBind();sxInit();initTocs();initDeck();route();if(location.hash==='#present')openDeck(0);
 </script>
 </body></html>
