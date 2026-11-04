@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Ankura Konak Clubhouse — interior design portal: renders, moodboard, floor plans, programme and preliminary budget."><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Konak Clubhouse Portal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Ankura Konak Clubhouse — interior design portal."><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Konak Clubhouse Portal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Caveat:wght@500;600&family=Jost:wght@200;300&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -737,6 +737,15 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .hs-tip b{font-family:var(--f-display);font-weight:400;font-size:17px}
 .hs-tip small{font-size:11.5px;color:var(--muted)}
 @media (hover:none){.hs-tip{display:none}}
+.in-live-fx{position:absolute;inset:0;pointer-events:none;opacity:0;will-change:transform,opacity}
+.lf{position:absolute;background-repeat:no-repeat}
+.lf.sway{animation:sway var(--d,6s) ease-in-out infinite alternate;animation-delay:var(--dl,0s)}
+@keyframes sway{0%{transform:rotate(calc(var(--a,.8deg)*-1)) skewX(calc(var(--a,.8deg)*-.4))}100%{transform:rotate(var(--a,.8deg)) skewX(calc(var(--a,.8deg)*.4))}}
+.lf.walk{animation:walk var(--d,1.1s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes walk{0%,100%{transform:translate(0,0)}25%{transform:translate(calc(var(--dx,1px)*.5),-1.2px)}50%{transform:translate(var(--dx,1px),0)}75%{transform:translate(calc(var(--dx,1px)*.5),-1.2px)}}
+.lf.glow{border-radius:50%;background:radial-gradient(closest-side,rgba(255,244,214,.95),rgba(255,214,150,.45) 45%,transparent 75%);mix-blend-mode:screen;animation:glow 3.2s ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes glow{0%,100%{opacity:.75}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.lf{animation:none!important}}
 /* pager */
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);padding:12px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0;max-width:48%;transition:border-color .2s,transform .2s}
@@ -760,6 +769,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
     <div class="in-head" id="in-head" aria-hidden="true">THE UNFOLDING LANDSCAPE</div>
     <img class="in-img" id="in-fg" src="img/intro/elp-sunset-fg.webp" alt="" aria-hidden="true" style="opacity:0">
     <div class="in-haze" id="in-haze"></div>
+    <div class="in-live-fx" id="in-lfx" aria-hidden="true"></div>
     <canvas class="in-fx" id="in-fx" aria-hidden="true"></canvas>
     <div class="in-flare" id="in-flare" aria-hidden="true"></div>
     <div class="in-sun" id="in-sun"></div>
@@ -1713,7 +1723,7 @@ function initDeck(){
   SKY.bright=1;SKY.mood=s.alt<-6?"night":s.alt>=20?"day":(s.az<180?"morning":"sunset");if(typeof setElMood==="function")setElMood();
   const tr=sunTimes(now),f=d=>d?d.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Kolkata"}):"–";
   const chip=$("#in-live");if(chip)chip.innerHTML=`<i></i>LIVE SKY · ${f(now)} IST · ${SKY.name} · sun ${s.alt.toFixed(0)}° · ↑${f(tr.rise)} ↓${f(tr.set)}`}
- const ENDSKY={"sunset": ["rgb(81,75,86)", "rgb(130,122,139)", "rgb(197,150,136)"], "morning": ["rgb(102,110,125)", "rgb(165,178,202)", "rgb(211,206,210)"], "night": ["rgb(10,22,36)", "rgb(16,35,59)", "rgb(23,43,68)"], "day": ["rgb(74,105,146)", "rgb(120,170,236)", "rgb(175,212,252)"]};
+ const ENDSKY={"sunset": ["rgb(80,75,87)", "rgb(129,122,140)", "rgb(189,158,157)"], "morning": ["rgb(102,112,129)", "rgb(164,181,209)", "rgb(207,208,219)"], "night": ["rgb(10,22,36)", "rgb(16,35,59)", "rgb(24,44,72)"], "day": ["rgb(74,105,146)", "rgb(119,170,236)", "rgb(161,204,251)"]};
  let ELM=null,ELOVR=null;const ELN={morning:"Early morning",day:"Day",sunset:"Sunset",night:"Night"};
  function setElMood(force){const m=ELOVR||SKY.mood||"sunset";if(m===ELM&&!force)return;const first=!ELM;ELM=m;const b=`img/intro/elp-${m}-base.webp`,f=`img/intro/elp-${m}-fg.webp`,ae=`img/intro/aer-${m}.jpg`;const TOPC={day:"rgb(91,145,225)",morning:"rgb(131,149,183)",sunset:"rgb(84,76,107)",night:"rgb(10,20,33)"};
   const swap=()=>{img.src=b;fg.src=f;const ai=aer.querySelector('img');if(ai){ai.removeAttribute('srcset');ai.src=ae}const eb=document.getElementById('in-elbg');if(eb)eb.src=b;$$(".in-moods button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.m===(ELOVR||"live")))};
@@ -1728,13 +1738,28 @@ function initDeck(){
  function placeInt(tf,op,p){const iw=W,ih=W/2,ox=0,oy=H-ih,l=ox+GL.x0/GL.W*iw,tp=oy+GL.y0/GL.H*ih,w=(GL.x1-GL.x0)/GL.W*iw,h=(GL.y1-GL.y0)/GL.H*ih;
   INT.style.left=l+"px";INT.style.top=tp+"px";INT.style.width=w+"px";INT.style.height=h+"px";INT.style.transformOrigin=`${W/2-l}px ${H/2-tp}px`;INT.style.transform=tf;INT.style.opacity=op;
   const ix=mx*-14,iy=my*-8;IA.style.transform=IB.style.transform=`translate(${ix}px,${iy}px)`;REFL.style.backgroundPosition=`${50+mx*30}% 0`;INT.classList.toggle("live",p>.9);INT.style.pointerEvents=p>.88?"auto":"none"}
+ // live motion in the arrival render: trees and palms sway, people take small steps, car lights glow (source px on the 1774-wide padded render; content starts at y=1513)
+ const LFX=$("#in-lfx"),P0=1513;
+ const SPR=[
+  ["sway",0,1303,340,470,{a:".45deg",d:"7s",ox:"12% 100%"}],
+  ["sway",120,1930,190,220,{a:".8deg",d:"5.2s",dl:"-1s",ox:"55% 100%"}],
+  ["sway",255,1900,160,240,{a:".9deg",d:"4.6s",dl:"-2.2s",ox:"50% 100%"}],
+  ["sway",1430,1880,200,250,{a:".8deg",d:"5s",dl:"-.6s",ox:"50% 100%"}],
+  ["sway",1610,1910,164,230,{a:".9deg",d:"4.4s",dl:"-1.7s",ox:"50% 100%"}],
+  ["walk",168,2120,26,58,{dx:"1.5px",d:"1.05s"}],["walk",250,2128,26,62,{dx:"-1.5px",d:"1.15s",dl:"-.4s"}],["walk",392,2130,28,62,{dx:"1.2px",d:"1.2s",dl:"-.7s"}],
+  ["walk",1028,2128,26,52,{dx:"1px",d:"1.1s",dl:"-.2s"}],["walk",1068,2124,28,56,{dx:"-1px",d:"1.25s",dl:"-.9s"}],["walk",1550,2104,30,76,{dx:"-1.4px",d:"1.1s",dl:"-.3s"}]];
+ const LIGHTS=[[70,2168],[150,2168],[1584,2142],[1638,2142]];
+ function buildLfx(){const m=ELM||"sunset",src=`img/intro/elp-${m}-fg.webp`,s=W/1774,top=H-2400*s;
+  let h=SPR.map(([k,x,y,w,hh,o])=>`<div class="lf ${k}" style="left:${x*s}px;top:${top+y*s}px;width:${w*s}px;height:${hh*s}px;background-image:url(${k==="sway"?src.replace("-fg.","-leaf."):src});background-size:${W}px auto;background-position:${-x*s}px ${-y*s}px;${o.a?`--a:${o.a};`:""}${o.d?`--d:${o.d};`:""}${o.dl?`--dl:${o.dl};`:""}${o.dx?`--dx:${o.dx};`:""}transform-origin:${o.ox||"50% 100%"}"></div>`).join("");
+  if(m!=="day")h+=LIGHTS.map(([x,y],i)=>`<div class="lf glow" style="left:${x*s-18*s}px;top:${top+y*s-12*s}px;width:${36*s}px;height:${24*s}px;--dl:${-i*.7}s"></div>`).join("");
+  LFX.innerHTML=h;LFX._k=m+W+"x"+H}
  let cur=RM?1:0,tgt=cur,raf=null;
  function prog(){const r=sec.getBoundingClientRect(),span=sec.offsetHeight-innerHeight;return span>0?clamp(-r.top/span):1}
  function draw(t){const p=cur;const [ox,oy]=clubPx();mx+=(tmx-mx)*.06;my+=(tmy-my)*.06;const px=mx*-14,py=my*-10;
   // aerial: settle, then dive onto the clubhouse
   const settle=ease(seg(p,0,.45)),dive=ease(seg(p,.5,.8));const sa=lerp(1.18,1,settle)*lerp(1,6,dive);
   aer.style.transformOrigin=`${ox}px ${oy}px`;aer.style.transform=`translate(${px}px,${py}px) rotate(${lerp(-3,0,ease(seg(p,.1,.6)))+Math.sin(t/2600)*.4*(1-dive)}deg) scale(${sa*(1+.012*Math.sin(t/3100))})`;aer.style.opacity=1-seg(p,.7,.73);aer.style.filter=`blur(${lerp(6,0,seg(p,.3,.55))}px) brightness(${lerp(.75,1,settle)}) saturate(${lerp(.6,1,settle)}) contrast(${lerp(.85,1,settle)})`;haze.style.opacity=Math.max(seg(p,.2,.34)*(1-seg(p,.34,.56))*.85, seg(p,.64,.71)*(1-seg(p,.73,.8))*.95);sun.style.opacity=lerp(1,.15,seg(p,.2,.6))*(1-seg(p,.66,.8))+seg(p,.8,1)*.0;
-  const eo=seg(p,.7,.73);img.style.opacity=eo;const ee=ease(seg(p,.68,.97));img.style.transform=`translate(${px*.5}px,${py*.35}px) scale(${lerp(1.3,1,ee)+.004*Math.sin(t/3400)})`;const es2=document.getElementById('in-endsky');es2.style.opacity=eo;{const C=ENDSKY[ELM||'sunset'],ct=Math.round(H-W/2),k=lerp(1.3,1,ee),y1=H/2+(ct-H/2)*k,y2=H/2+(ct+W*.17-H/2)*k;es2.style.background=`linear-gradient(180deg,${C[0]} 0px,${C[1]} ${Math.max(0,y1)}px,${C[2]} ${y2}px,${C[2]} 100%)`}img.style.filter=`brightness(${lerp(.7,1,ee)*SKY.bright})`;fg.style.opacity=eo;fg.style.transform=img.style.transform;fg.style.filter=img.style.filter;placeInt(img.style.transform,eo,p);const ho=seg(p,.8,.93);head.style.opacity=ho*.95;head.style.letterSpacing=lerp(.22,.04,ease(ho))+'em';const eiw=W,eih=W/2,es=lerp(1.3,1,ee),bTop=H/2+((H-eih)+.225*eih-H/2)*es,hh=head.offsetHeight||100,fy=Math.max(70,bTop-hh-22),sy0=bTop+hh*.25;head.style.transform=`translate(${px*.35}px,${lerp(sy0,fy,ease(seg(p,.8,.95)))+py*.3}px)`;const rl=route.getTotalLength?route.getTotalLength():400,rd=ease(seg(p,.38,.56)),rv=seg(p,.36,.4)*(1-seg(p,.62,.68));route.style.opacity=rv*.7;route2.style.opacity=rv;route2.style.strokeDasharray=rl;route2.style.strokeDashoffset=rl*(1-rd);if(route.getPointAtLength){const pt=route.getPointAtLength(rl*rd);rdot.setAttribute('cx',pt.x);rdot.setAttribute('cy',pt.y);rdot.style.opacity=rv}const C=CAPS.find(c=>p>=c[0]&&p<=c[1]);if(C){const lp=seg(p,C[0],C[1]),io=Math.min(seg(lp,0,.25),1-seg(lp,.78,1));cap.style.opacity=io;cap.style.clipPath=`inset(0 ${100-seg(lp,0,.3)*100}% 0 0)`;if(cap._c!==C){cap._c=C;$('#cap-a').textContent=C[2];$('#cap-t').textContent=C[3];$('#cap-s').textContent=C[4]}}else cap.style.opacity=0;
+  const eo=seg(p,.7,.73);img.style.opacity=eo;const ee=ease(seg(p,.68,.97));img.style.transform=`translate(${px*.5}px,${py*.35}px) scale(${lerp(1.3,1,ee)+.004*Math.sin(t/3400)})`;const es2=document.getElementById('in-endsky');es2.style.opacity=eo;{const C=ENDSKY[ELM||'sunset'],ct=Math.round(H-W/2),k=lerp(1.3,1,ee),y1=H/2+(ct-H/2)*k,y2=H/2+(ct+W*.17-H/2)*k;es2.style.background=`linear-gradient(180deg,${C[0]} 0px,${C[1]} ${Math.max(0,y1)}px,${C[2]} ${y2}px,${C[2]} 100%)`}img.style.filter=`brightness(${lerp(.7,1,ee)*SKY.bright})`;fg.style.opacity=eo;fg.style.transform=img.style.transform;if(eo>0&&LFX._k!==(ELM||'sunset')+W+'x'+H)buildLfx();LFX.style.opacity=seg(p,.86,.95);LFX.style.transform=img.style.transform;fg.style.filter=img.style.filter;placeInt(img.style.transform,eo,p);const ho=seg(p,.8,.93);head.style.opacity=ho*.95;head.style.letterSpacing=lerp(.22,.04,ease(ho))+'em';const eiw=W,eih=W/2,es=lerp(1.3,1,ee),bTop=H/2+((H-eih)+.225*eih-H/2)*es,hh=head.offsetHeight||100,fy=Math.max(70,bTop-hh-22),sy0=bTop+hh*.25;head.style.transform=`translate(${px*.35}px,${lerp(sy0,fy,ease(seg(p,.8,.95)))+py*.3}px)`;const rl=route.getTotalLength?route.getTotalLength():400,rd=ease(seg(p,.38,.56)),rv=seg(p,.36,.4)*(1-seg(p,.62,.68));route.style.opacity=rv*.7;route2.style.opacity=rv;route2.style.strokeDasharray=rl;route2.style.strokeDashoffset=rl*(1-rd);if(route.getPointAtLength){const pt=route.getPointAtLength(rl*rd);rdot.setAttribute('cx',pt.x);rdot.setAttribute('cy',pt.y);rdot.style.opacity=rv}const C=CAPS.find(c=>p>=c[0]&&p<=c[1]);if(C){const lp=seg(p,C[0],C[1]),io=Math.min(seg(lp,0,.25),1-seg(lp,.78,1));cap.style.opacity=io;cap.style.clipPath=`inset(0 ${100-seg(lp,0,.3)*100}% 0 0)`;if(cap._c!==C){cap._c=C;$('#cap-a').textContent=C[2];$('#cap-t').textContent=C[3];$('#cap-s').textContent=C[4]}}else cap.style.opacity=0;
   sky.style.opacity=1-seg(p,.14,.42);
   const po=seg(p,.4,.47)*(1-seg(p,.58,.64));pin.style.opacity=po;pin.style.left=ox+"px";pin.style.top=oy+"px";
   ttl.style.opacity=1-seg(p,.02,.16);ttl.style.transform=`translate(${mx*10}px,${my*8-seg(p,0,.2)*60}px) scale(${1+seg(p,0,.2)*.06})`;cv.style.transform=`translate(${mx*-28}px,${my*-18}px) scale(1.06)`;const fl=Math.sin(Math.PI*seg(p,.22,.42));flare.style.opacity=fl*.9;flare.style.transform=`translateX(${lerp(-25,25,seg(p,.22,.42))}%) scaleY(${.6+fl*.6})`;
