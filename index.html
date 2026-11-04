@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Ankura Konak Clubhouse — interior design portal."><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Konak Clubhouse Portal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Ankura Konak Clubhouse — interior design portal."><link rel="icon" href="img/konak-logo-dark.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Konak Clubhouse Portal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Caveat:wght@500;600&family=Jost:wght@200;300&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -789,6 +789,13 @@ tr.grp .cnt{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-tra
 .sx-k{cursor:pointer;transition:border-color .2s}.sx-k:hover{border-color:var(--accent)}
 .sx-tabs{margin-bottom:-12px}
 a.brand{text-decoration:none;color:inherit;cursor:pointer;border-radius:4px;transition:opacity .2s}a.brand:hover{opacity:.75}a.brand:hover b{color:var(--accent)}
+.brand .logo{height:24px;width:auto;display:block;margin-top:3px}
+.brand .logo-l{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand .logo-d{display:none}:root:not([data-theme="light"]) .brand .logo-l{display:block}}
+:root[data-theme="dark"] .brand .logo-d{display:none}:root[data-theme="dark"] .brand .logo-l{display:block}
+@media (max-width:600px){.brand .logo{height:19px}}
+.ld-logo{width:min(320px,62vw);height:auto;opacity:0;animation:ldIn 1.2s .15s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes ldIn{from{opacity:0;transform:translateY(10px) scale(.97);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
 /* pager */
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);padding:12px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0;max-width:48%;transition:border-color .2s,transform .2s}
@@ -835,7 +842,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
     <div class="in-live mono" id="in-live"></div>
     <div class="in-moods" id="in-moods" role="group" aria-label="Time of day"><button data-m="live" aria-pressed="true">● Live</button><button data-m="morning" aria-pressed="false">Early morning</button><button data-m="day" aria-pressed="false">Day</button><button data-m="sunset" aria-pressed="false">Sunset</button><button data-m="night" aria-pressed="false">Night</button></div>
     <div class="in-tools"><span class="snd-wrap"><button class="in-skip" id="in-snd" aria-pressed="false">♪ Sound off</button><span class="snd-cue" id="snd-cue">Tap for sound</span><div class="snd-panel" id="snd-panel" hidden><div class="mono" id="snd-now" style="font-size:11px;opacity:.85"></div><div class="snd-modes" id="snd-modes" role="group" aria-label="Soundscape"><button data-m="auto" aria-pressed="true">Auto · live</button><button data-m="dawn" aria-pressed="false">Dawn</button><button data-m="day" aria-pressed="false">Day</button><button data-m="dusk" aria-pressed="false">Dusk</button><button data-m="night" aria-pressed="false">Night</button></div><label class="snd-vol"><span>Volume</span><input type="range" id="snd-vol" min="0" max="1" step=".05" value=".7"></label></div></span><button class="in-skip" id="in-skip">Skip intro ↓</button></div>
-    <div id="in-load" aria-hidden="true"><div class="ld-p ld-l"></div><div class="ld-p ld-r"></div><div class="ld-c"><div class="ld-t">KONAK</div><div class="ld-s">Clubhouse · Ankura Homes</div><div class="ld-bar"><i id="ld-bar"></i></div><div class="ld-n mono" id="ld-n">0%</div></div></div>
+    <div id="in-load" aria-hidden="true"><div class="ld-p ld-l"></div><div class="ld-p ld-r"></div><div class="ld-c"><img class="ld-logo" src="img/konak-logo-light.png" alt="KONAK"><div class="ld-s">Clubhouse · Ankura Homes</div><div class="ld-bar"><i id="ld-bar"></i></div><div class="ld-n mono" id="ld-n">0%</div></div></div>
     <div class="in-prog"><i id="in-bar"></i></div>
   </div>
 </section>
@@ -843,7 +850,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
 <header class="top">
   <div class="wrap">
     <div class="top-row">
-      <a class="brand" href="#designs" id="brand-home" aria-label="Back to the landing page" title="Back to the landing page"><span>Ankura Homes</span><b>KONAK CLUBHOUSE</b></a>
+      <a class="brand" href="#designs" id="brand-home" aria-label="Konak Clubhouse, back to the landing page" title="Back to the landing page"><span>Ankura Homes · Clubhouse</span><img class="logo logo-d" src="img/konak-logo-dark.png" alt="KONAK"><img class="logo logo-l" src="img/konak-logo-light.png" alt="KONAK"></a>
       <div class="top-meta"><button class="dbtn hdr-snd" id="hdr-snd" aria-pressed="false" title="Sound on/off">♪</button><button class="present-btn" data-present>▶ Present</button><span class="pill" id="today-pill"><i class="dot"></i><span></span></span><span class="pill" id="stage-pill"></span></div>
     </div>
     <nav class="tabs" id="tabs" aria-label="Portal sections">
@@ -1055,7 +1062,7 @@ nav.tabs a .ix{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);mar
 <footer><div class="wrap">Compiled from Atelier Nine's execution framework, plans (AKI01–03), renders, moodboard and preliminary quotations (2 Sep and 3 Oct 2026). Preliminary figures for discussion; not a contract value.</div></footer>
 
 <div id="deck" hidden role="dialog" aria-modal="true" aria-label="Project presentation">
-  <div class="deck-top"><div class="brand"><span>Ankura Homes</span><b>KONAK CLUBHOUSE</b></div><span class="ch" id="deck-ch"></span><div class="sp"><button class="dbtn" id="deck-menu" title="All slides (G)">☰ Slides</button><button class="dbtn" id="deck-x" aria-label="Close presentation">✕</button></div></div>
+  <div class="deck-top"><div class="brand"><span>Ankura Homes · Clubhouse</span><img class="logo" src="img/konak-logo-light.png" alt="KONAK" style="height:20px"></div><span class="ch" id="deck-ch"></span><div class="sp"><button class="dbtn" id="deck-menu" title="All slides (G)">☰ Slides</button><button class="dbtn" id="deck-x" aria-label="Close presentation">✕</button></div></div>
   <div id="deck-stage"></div>
   <div id="deck-toc" hidden></div>
   <div class="deck-bot"><button class="dbtn" id="deck-p" aria-label="Previous slide">‹</button><button class="dbtn" id="deck-play" aria-label="Auto-advance">▶</button><button class="dbtn" id="deck-n2" aria-label="Next slide">›</button><div class="deck-prog"><i id="deck-bar"></i></div><span class="mono" id="deck-n" style="font-size:12px;color:var(--muted)"></span><span class="muted" style="font-size:11.5px">← → keys · G for all slides</span></div>
